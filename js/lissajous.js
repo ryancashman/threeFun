@@ -1,30 +1,21 @@
-
-// var pointCount = 100;
+// 
+// function setLissajousPositions(line, phi)
+// {
+//   var positions = line.geometry.attributes.position.array;
 //
-// var ljSettings = {
-//   freq : new THREE.Vector3( 1, 2, 3 ),
-//   mod : new THREE.Vector3 ( 2, 3, 4 ),
-//   phi : new THREE.Vector3 ( 1, 2, 3 ),
-//   scale : 3
+//   var index = 0;
+//   for (var i = 0; i < pointCount; i ++ ) {
+//     var _angle = THREE.Math.mapLinear( i, 0, pointCount, 0, Math.PI * 2 );
+//
+//     positions[ index ++ ] = computeLissajousPosition(_angle, 15, 2, phi, 2);
+//     positions[ index ++ ] = computeLissajousPosition(_angle, 13, 3, phi*0.4, 2);
+//     positions[ index ++ ] = computeLissajousPosition(_angle, 12, 5, phi*0.2, 2);
+//
+//   }
+//   line.geometry.attributes.position.needsUpdate = true; // VERY IMPORTANT!!
 // }
-
-function ljPos(angle, lj)
-{
-  var pos = new THREE.Vector3();
-  pos.x = ( Math.sin( angle * lj.freq.x + THREE.Math.degToRad( lj.phi.x ) ) * Math.cos(angle * lj.mod.x ) ) * lj.scale;
-  pos.y = ( Math.sin( angle * lj.freq.y + THREE.Math.degToRad( lj.phi.y ) ) * Math.cos(angle * lj.mod.y ) ) * lj.scale;
-  pos.z = ( Math.sin( angle * lj.freq.z + THREE.Math.degToRad( lj.phi.z ) ) * Math.cos(angle * lj.mod.z ) ) * lj.scale;
-  console.log(pos);
-  return pos;
-}
-
-function lissajous(lj)
-{
-  var _geo = new THREE.Geometry();
-  for (var p = 0; p < pointCount; p++)
-  {
-    var _angle = THREE.Math.mapLinear( p, 0, pointCount, 0, Math.PI * 2 );
-    _geo.vertices.push(ljPos(_angle, lj));
-  }
-  return _geo;
-}
+//
+// function computeLissajousPosition(angle, freq, mod, phi, scale)
+// {
+//   return (Math.sin( angle * freq + THREE.Math.degToRad( phi ) ) * Math.cos(angle * mod ) ) * scale;
+// }

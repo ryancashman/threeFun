@@ -62,3 +62,22 @@ function animate() {
     // cube.rotation.x += 0.01;
     // cube.rotation.y += 0.01;
 };
+
+
+// function randomPositions()
+// {
+//   var positions = line.geometry.attributes.position.array;
+//
+//   var index = 0;
+//   for (var i = 0; i < pointCount; i ++ ) {
+//     positions[ index ++ ] = x;
+//     positions[ index ++ ] = y;
+//     positions[ index ++ ] = z;
+//
+//     x = Math.random() * ( Math.random() > 0.5 ? 2 : -2 );
+//     y = Math.random() * ( Math.random() > 0.5 ? 2 : -2 );
+//     z = Math.random() * ( Math.random() > 0.5 ? 2 : -2 );
+//   }
+//
+//   line.geometry.attributes.position.needsUpdate = true; // VERY IMPORTANT!!
+// }
