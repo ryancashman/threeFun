@@ -1,11 +1,21 @@
+// const dat = require('dat.gui');
+// const gui = new dat.GUI();
+// const THREE = require('three');
+
 var scene, camera, renderer;
 var geometry, material, ljLine;
 var x, y, z;
 
 var camMovement = 0;
-var pointCount = 100;
+var pointCount = 1200;
 
 var controls;
+
+var ljSettings = {
+  freq : new THREE.Vector3( 5, 6, 3 ),
+  mod : new THREE.Vector3 ( 2, 2, 1 ),
+  scale : 3
+}
 
 function init()
 {
@@ -51,14 +61,13 @@ function setRandomColors(line)
     colors[ index ++ ] = Math.random();
     colors[ index ++ ] = Math.random();
   }
-
   line.geometry.attributes.color.needsUpdate = true; // VERY IMPORTANT!!
 }
 
 function animate() {
     requestAnimationFrame( animate );
     var time = Date.now() * 0.1;
-    setLissajousPositions(ljLine, time);
+    setLissajousPositions(ljLine, time, ljSettings);
     controls.update()
     renderer.render( scene, camera );
 };

@@ -4,13 +4,6 @@ var linemat, linegeo, line;
 
 var pointCount = 1200;
 
-var ljSettings = {
-  freq : new THREE.Vector3( 12, 22, 12 ),
-  mod : new THREE.Vector3 ( 5, 6, 4 ),
-  phi : new THREE.Vector3 ( 0, 0, 0 ),
-  scale : 3
-}
-
 function init()
 {
   scene = new THREE.Scene();
