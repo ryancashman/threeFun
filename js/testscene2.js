@@ -3,7 +3,7 @@ var geometry, material, line;
 var x, y, z;
 
 var camMovement = 0;
-var pointCount = 12;
+var pointCount = 50000;
 //
 // var ljSettings = {
 //   freq : new THREE.Vector3( 12, 22, 12 ),
@@ -46,10 +46,11 @@ function updatePositions()
 {
   var positions = line.geometry.attributes.position.array;
 
-  for (var i = 0; i < pointCount; i += 3 ) {
-    positions[ i ] = x;
-    positions[ i + 1 ] = y;
-    positions[ i + 2 ] = z;
+  var index = 0;
+  for (var i = 0; i < pointCount; i ++ ) {
+    positions[ index ++ ] = x;
+    positions[ index ++ ] = y;
+    positions[ index ++ ] = z;
 
     x = Math.random() * 2;
     y = Math.random() * 2;
@@ -61,7 +62,7 @@ function updatePositions()
 
 function animate() {
     requestAnimationFrame( animate );
-    camMovement+=0.01;
+    //camMovement+=0.01;
     updatePositions();
 
 //    camera.position.x = Math.sin(camMovement)*5;
