@@ -10,6 +10,14 @@ var camMovement = 0;
 var pointCount = 1200;
 
 var controls;
+var gui;
+
+var params = function()
+{
+  this.message = "yo yo yo!";
+  this.a = 12;
+  this.b = 42;
+};
 
 var ljSettings = {
   freq : new THREE.Vector3( 5, 6, 3 ),
@@ -26,7 +34,18 @@ function init()
   renderer = new THREE.WebGLRenderer( { antialias : true } );
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
-  controls = new THREE.TrackballControls(camera, renderer.domElememnt);
+
+  // controls = new THREE.TrackballControls(camera, renderer.domElememnt);
+
+  gui = new dat.GUI( {
+    height : 5 * 32 - 1 } );
+
+  gp = new params();
+
+  gui.add(gp, 'a', 0, 1000).name("ParmX");
+  gui.add(gp, 'b', 12, 100).name("ParmY");
+  gui.add(gp, 'message').name("MSG Z");
+  //gui.open();
 }
 
 function start (){
@@ -68,6 +87,6 @@ function animate() {
     requestAnimationFrame( animate );
     var time = Date.now() * 0.1;
     setLissajousPositions(ljLine, time, ljSettings);
-    controls.update()
+    // controls.update()
     renderer.render( scene, camera );
 };
