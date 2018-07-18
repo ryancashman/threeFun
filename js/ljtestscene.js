@@ -25,8 +25,9 @@ var ljSettings = {
   scale : 3
 }
 
-function init()
+function initScene()
 {
+  //alert("Hi!");
   x = y = z = 0;
   scene = new THREE.Scene();
   // camera = new THREE.PerspectiveCamera( 75, window.devicePixelRatio, 0.1, 100 );
@@ -37,19 +38,33 @@ function init()
 
   // controls = new THREE.TrackballControls(camera, renderer.domElememnt);
 
+}
+
+function initGUI(){
   gui = new dat.GUI( {
     height : 5 * 32 - 1 } );
 
   gp = new params();
 
-  gui.add(gp, 'a', 0, 1000).name("ParmX");
-  gui.add(gp, 'b', 12, 100).name("ParmY");
-  gui.add(gp, 'message').name("MSG Z");
+  var a = gui.add(gp, 'a', 1, 100).name("Parm A");
+  a.onChange(function (value){
+    //console.log("changed! " + value.toString());
+    ljSettings.freq.x = value;
+  });
+
+  var b = gui.add(gp, 'b', 1, 100).name("Parm B");
+  b.onChange(function (value){
+    ljSettings.freq.y = value;
+  })
+  gui.add(gp, 'message', 1, 10).name("Message");
   //gui.open();
 }
 
 function start (){
-    init();
+
+    initScene();
+
+    initGUI();
 
     material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth : 5 } );
     geometry = new THREE.BufferGeometry;
@@ -86,7 +101,7 @@ function setRandomColors(line)
 function animate() {
     requestAnimationFrame( animate );
     var time = Date.now() * 0.1;
-    setLissajousPositions(ljLine, time, ljSettings);
+    setLissajousPositions(ljLine, time, ljSettings, false);
     // controls.update()
     renderer.render( scene, camera );
 };

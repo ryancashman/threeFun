@@ -1,10 +1,10 @@
-function setLissajousPositions(line, phi, settings)
+function setLissajousPositions(line, phi, settings, closed)
 {
   var positions = line.geometry.attributes.position.array;
 
   var index = 0;
   for (var i = 0; i < pointCount; i ++ ) {
-    var _angle = THREE.Math.mapLinear( ( i == pointCount - 1 ? 0 : i ) , 0, pointCount, 0, Math.PI * 2 );
+    var _angle = THREE.Math.mapLinear( ( (closed && i == pointCount - 1) ? 0 : i ) , 0, pointCount, 0, Math.PI * 2 );
 
     positions[ index ++ ] = computeLissajousPosition(_angle, settings.freq.x, settings.mod.x, phi, settings.scale);
     positions[ index ++ ] = computeLissajousPosition(_angle, settings.freq.y, settings.mod.y, phi*0.5, settings.scale);
