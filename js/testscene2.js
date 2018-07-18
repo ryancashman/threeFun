@@ -49,9 +49,7 @@ function start (){
 function setColors()
 {
   var colors = line.geometry.attributes.color.array;
-  var r = 800;
   var u = v = w = 0.1;
-
   var index = 0;
   for (var i = 0; i < pointCount; i ++ ) {
     colors[ index ++ ] = u;
