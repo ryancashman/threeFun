@@ -11,13 +11,17 @@ var ljSettings = {
   scale : 3
 }
 
-function init (){
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+function init()
+{
+  scene = new THREE.Scene();
+  camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+  renderer = new THREE.WebGLRenderer( { antialias : true } );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.body.appendChild( renderer.domElement );
+}
 
-    renderer = new THREE.WebGLRenderer( { antialias : true } );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
+function start (){
+
 
     // geometry = new THREE.BoxGeometry( 1, 1, 1 );
     // material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
