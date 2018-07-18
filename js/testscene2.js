@@ -25,21 +25,45 @@ function init()
 function start (){
     init();
 
-    material = new THREE.LineBasicMaterial( { color : 0x0000ff, linewidth : 3 } );
-    // geometry = lissajous(ljSettings);
+    //material = new THREE.LineBasicMaterial( { color : 0x0000ff, linewidth : 3 } );
+    material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth : 5 } );
     geometry = new THREE.BufferGeometry;
 
     var positions = new Float32Array( pointCount * 3);
+    var colors = new Float32Array( pointCount * 3 );
+
     geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+    geometry.addAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+
     //geometry.setDrawRange(0, pointCount-1); // might not be needed if drawing all?
     line = new THREE.Line( geometry, material );
 
-    //updatePositions();
+    setColors();
     geometry.computeBoundingSphere();
 
     scene.add( line );
     camera.position.z = 5;
     camera.lookAt(new THREE.Vector3());
+}
+
+function setColors()
+{
+  var colors = line.geometry.attributes.color.array;
+  var r = 800;
+  var u = v = w = 0.1;
+
+  var index = 0;
+  for (var i = 0; i < pointCount; i ++ ) {
+    colors[ index ++ ] = u;
+    colors[ index ++ ] = v;
+    colors[ index ++ ] = w;
+
+    u = Math.random();
+    v = Math.random();
+    w = Math.random();
+  }
+
+  line.geometry.attributes.color.needsUpdate = true; // VERY IMPORTANT!!
 }
 
 function updatePositions()
@@ -52,9 +76,9 @@ function updatePositions()
     positions[ index ++ ] = y;
     positions[ index ++ ] = z;
 
-    x = Math.random() * 2;
-    y = Math.random() * 2;
-    z = Math.random() * 2;
+    x = Math.random() * (Math.random() > 0.5 ? 2 : -2);
+    y = Math.random() * (Math.random() > 0.5 ? 2 : -2);
+    z = Math.random() * (Math.random() > 0.5 ? 2 : -2);
   }
 
   line.geometry.attributes.position.needsUpdate = true; // VERY IMPORTANT!!
