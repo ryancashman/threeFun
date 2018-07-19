@@ -1,13 +1,38 @@
 
-//THIS CouLD ALL BE WRAPPED UP INTO A MODULE
+//THIS CouLD ALL BE WRAPPED UP INTO A MODULE?
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 100 );
-const renderer = new THREE.WebGLRenderer( { antialias : true } );
-var geometry, material, ljLine;
+var sceneModule = ( function() {
+  //private
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 100 );
+  const renderer = new THREE.WebGLRenderer( { antialias : true } );
+  //public
+  return{
+
+    init : function(){
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( renderer.domElement );
+      camera.position.z = 5;
+      camera.lookAt( new THREE.Vector3() );
+    },
+
+    add : function( geo )
+    {
+      scene.add( geo );
+    },
+
+    render : function(){
+      renderer.render( scene, camera );
+    }
+
+  };
+} )();
+
+//var geometry, material, ljLine;
+var ljLine;
 
 const camMovement = 0;
-const pointCount = 1200;
+const pointCount = 2400;
 
 const gui = new dat.GUI();
 
@@ -21,12 +46,6 @@ const ljParams = function()
 }
 
 var ljp;
-
-function initScene()
-{
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  document.body.appendChild( renderer.domElement );
-}
 
 function initGUI(){
   ljp = new ljParams(); // for whatever reason this needs to be a new object.
@@ -58,11 +77,11 @@ function initGUI(){
 }
 
 function start (){
-    initScene();
+    sceneModule.init();
     initGUI();
 
-    material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth : 5 } );
-    geometry = new THREE.BufferGeometry;
+    const material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth : 5 } );
+    const geometry = new THREE.BufferGeometry;
 
     const positions = new Float32Array( pointCount * 3);
     const colors = new Float32Array( pointCount * 3 );
@@ -72,19 +91,17 @@ function start (){
 
     ljLine = new THREE.Line( geometry, material );
 
-    setRandomColors(ljLine, pointCount);
+    lissajousModule.randomColors(ljLine, pointCount);
 
     geometry.computeBoundingSphere();
 
-    scene.add( ljLine );
-    camera.position.z = 5;
-    camera.lookAt( new THREE.Vector3() );
+    sceneModule.add( ljLine );
+
 }
 
 function animate() {
     requestAnimationFrame( animate );
     ljp.offset = Date.now();
-    setLissajousPositions(ljLine, ljp, pointCount, false);
-    // controls.update()
-    renderer.render( scene, camera );
+    lissajousModule.updatePoints(ljLine, ljp, pointCount, false);
+    sceneModule.render();
 };
