@@ -1,107 +1,106 @@
-// const dat = require('dat.gui');
-// const gui = new dat.GUI();
-// const THREE = require('three');
 
-var scene, camera, renderer;
-var geometry, material, ljLine;
-var x, y, z;
+//THIS CouLD ALL BE WRAPPED UP INTO A MODULE?
 
-var camMovement = 0;
-var pointCount = 1200;
+const sceneModule = ( function() {
+  //private
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 100 );
+  const renderer = new THREE.WebGLRenderer( { antialias : true } );
+  //public
+  return{
 
-var controls;
-var gui;
+    init : function(){
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( renderer.domElement );
+      camera.position.z = 5;
+      camera.lookAt( new THREE.Vector3() );
+    },
 
-var params = function()
+    add : function( geo )
+    {
+      scene.add( geo );
+    },
+
+    render : function(){
+      renderer.render( scene, camera );
+    }
+
+  };
+} )();
+
+const camMovement = 0;
+const pointCount = 2400;
+const gui = new dat.GUI();
+
+const ljParams = function()
 {
-  this.message = "yo yo yo!";
-  this.a = 12;
-  this.b = 42;
-};
-
-var ljSettings = {
-  freq : new THREE.Vector3( 5, 6, 3 ),
-  mod : new THREE.Vector3 ( 2, 2, 1 ),
-  scale : 3
+  this.freq = [ 4, 8, 2 ],
+  this.mod = [ 1, 2, 3 ],
+  this.scale = [ 1, 1, 1 ],
+  this.speed = [ .1, .1, .1 ],
+  this.offset = 0
 }
 
-function initScene()
-{
-  //alert("Hi!");
-  x = y = z = 0;
-  scene = new THREE.Scene();
-  // camera = new THREE.PerspectiveCamera( 75, window.devicePixelRatio, 0.1, 100 );
-  camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 100 );
-  renderer = new THREE.WebGLRenderer( { antialias : true } );
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  document.body.appendChild( renderer.domElement );
-
-  // controls = new THREE.TrackballControls(camera, renderer.domElememnt);
-
-}
+var ljp;
+var ljLine;
 
 function initGUI(){
-  gui = new dat.GUI( {
-    height : 5 * 32 - 1 } );
+  ljp = new ljParams(); // for whatever reason this needs to be a new object.
 
-  gp = new params();
-
-  var a = gui.add(gp, 'a', 1, 100).name("Parm A");
-  a.onChange(function (value){
-    //console.log("changed! " + value.toString());
-    ljSettings.freq.x = value;
+  const freq = gui.addFolder("Freq");
+  Object.keys(ljp.freq).forEach((key) => {
+    freq.add(ljp.freq, key, 0, 100);
   });
+  freq.open();
 
-  var b = gui.add(gp, 'b', 1, 100).name("Parm B");
-  b.onChange(function (value){
-    ljSettings.freq.y = value;
-  })
-  gui.add(gp, 'message', 1, 10).name("Message");
-  //gui.open();
+  const mod = gui.addFolder("Mod");
+  Object.keys(ljp.mod).forEach((key) => {
+    mod.add(ljp.mod, key, 0, 100);
+  });
+  mod.open()
+
+  const scale = gui.addFolder("Scale");
+  Object.keys(ljp.scale).forEach((key) => {
+    scale.add(ljp.scale, key, 0, 10);
+  });
+  scale.open()
+
+  const speed = gui.addFolder("Speed");
+  Object.keys(ljp.speed).forEach((key) => {
+    speed.add(ljp.speed, key, 0, 1);
+  });
+  speed.open()
+
 }
 
 function start (){
-
-    initScene();
-
+    sceneModule.init();
     initGUI();
 
-    material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth : 5 } );
-    geometry = new THREE.BufferGeometry;
-
-    var positions = new Float32Array( pointCount * 3);
-    var colors = new Float32Array( pointCount * 3 );
+    const material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth : 5 } );
+    const geometry = new THREE.BufferGeometry;
+    const positions = new Float32Array( pointCount * 3);
+    const colors = new Float32Array( pointCount * 3 );
 
     geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
     geometry.addAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
 
     ljLine = new THREE.Line( geometry, material );
 
-    setRandomColors(ljLine);
+    lissajousModule.randomColors(ljLine, pointCount);
+    //const colorA = 0.2;
+    //const colorB = 0.6;
+    //lissajousModule.twoToneColors(ljLine, pointCount, colorA, colorB);
 
     geometry.computeBoundingSphere();
 
-    scene.add( ljLine );
-    camera.position.z = 5;
-    camera.lookAt( new THREE.Vector3() );
-}
+    sceneModule.add( ljLine );
 
-function setRandomColors(line)
-{
-  var colors = line.geometry.attributes.color.array;
-  var index = 0;
-  for (var i = 0; i < pointCount; i ++ ) {
-    colors[ index ++ ] = Math.random();
-    colors[ index ++ ] = Math.random();
-    colors[ index ++ ] = Math.random();
-  }
-  line.geometry.attributes.color.needsUpdate = true; // VERY IMPORTANT!!
 }
 
 function animate() {
     requestAnimationFrame( animate );
-    var time = Date.now() * 0.1;
-    setLissajousPositions(ljLine, time, ljSettings, false);
-    // controls.update()
-    renderer.render( scene, camera );
+    ljp.offset = Date.now();
+    lissajousModule.updatePoints(ljLine, ljp, pointCount, false);
+    sceneModule.render();
 };
