@@ -1,4 +1,4 @@
-var lissajousModule = ( function () {
+const lissajousModule = ( function () {
   //private
   function computePosition( angle, freq, mod, phi, scale ){
     return ( Math.sin( angle * freq + THREE.Math.degToRad( phi ) ) * Math.cos( angle * mod ) ) * scale;

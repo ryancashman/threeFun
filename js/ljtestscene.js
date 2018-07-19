@@ -1,7 +1,7 @@
 
 //THIS CouLD ALL BE WRAPPED UP INTO A MODULE?
 
-var sceneModule = ( function() {
+const sceneModule = ( function() {
   //private
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 100 );
@@ -28,12 +28,8 @@ var sceneModule = ( function() {
   };
 } )();
 
-//var geometry, material, ljLine;
-var ljLine;
-
 const camMovement = 0;
 const pointCount = 2400;
-
 const gui = new dat.GUI();
 
 const ljParams = function()
@@ -46,6 +42,7 @@ const ljParams = function()
 }
 
 var ljp;
+var ljLine;
 
 function initGUI(){
   ljp = new ljParams(); // for whatever reason this needs to be a new object.
