@@ -82,7 +82,6 @@ function start (){
 
     const material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors, linewidth : 5 } );
     const geometry = new THREE.BufferGeometry;
-
     const positions = new Float32Array( pointCount * 3);
     const colors = new Float32Array( pointCount * 3 );
 
@@ -92,6 +91,9 @@ function start (){
     ljLine = new THREE.Line( geometry, material );
 
     lissajousModule.randomColors(ljLine, pointCount);
+    //const colorA = 0.2;
+    //const colorB = 0.6;
+    //lissajousModule.twoToneColors(ljLine, pointCount, colorA, colorB);
 
     geometry.computeBoundingSphere();
 

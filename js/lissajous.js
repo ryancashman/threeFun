@@ -32,7 +32,20 @@ var lissajousModule = ( function () {
         }
       }
       line.geometry.attributes.color.needsUpdate = true; // VERY IMPORTANT!!
-    }
+    }//,
+
+    // twoToneColors : function ( line, maxPoints, a, b )
+    // {
+    //   const colors = line.geometry.attributes.color.array;
+    //   var index = 0;
+    //   for (var i = 0; i < maxPoints; i ++ ) {
+    //     for ( var j = 0; j <= 2; j ++ )
+    //     {
+    //       //colors[ index ++ ] = a.lerp(b, ( i/maxPoints) );
+    //     }
+    //   }
+    //   line.geometry.attributes.color.needsUpdate = true; // VERY IMPORTANT!!
+    // }
 
   };
 } )();
